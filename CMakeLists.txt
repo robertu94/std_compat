@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.1" LANGUAGES CXX)
+project(std_compat VERSION "0.0.2" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -71,6 +71,9 @@ option(BUILD_SHARED_LIBS "build std_compat as a shared library" ON)
 
 add_library(std_compat
   ./src/std_compat.cc
+  ./src/variant.cc
+  ./src/optional.cc
+  ./src/span.cc
   ./include/algorithm.h
   ./include/numeric.h
   ./include/std_compat.h
@@ -89,9 +92,10 @@ add_library(std_compat
 target_compile_features(std_compat PUBLIC cxx_std_${STDCOMPAT_CXX_VERSION})
 target_include_directories(std_compat 
   PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}> 
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/std_compat>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   )
 target_compile_options(std_compat PRIVATE 
   $<$<CONFIG:Debug>: -Wall -Werror -Wextra -Wpedantic>
@@ -109,17 +113,33 @@ configure_file(
 
 if(NOT (STDCOMPAT_HAS_VARIANT OR STDCOMPAT_HAS_OPTIONAL))
   find_package(Boost COMPONENTS REQUIRED)
-  target_link_libraries(std_compat PUBLIC Boost::boost)
+  target_link_libraries(std_compat INTERFACE Boost::boost)
 endif()
 
 
-export(TARGETS std_compat NAMESPACE std_compat:: FILE std_compat.cmake)
-install(TARGETS std_compat EXPORT std_compatConfig
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/std_compatConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/std_compat/std_compatConfig.cmake"
+  INSTALL_DESTINATION "${CMAKE_INSTALL_PREFIX}/share/std_compat/"
+  )
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/std_compat/std_compatConfigVersion.cmake"
+  VERSION ${std_compat_VERISON}
+  COMPATIBILITY SameMinorVersion
+  )
+export(TARGETS std_compat NAMESPACE std_compat:: FILE std_compatTargets.cmake)
+install(TARGETS std_compat EXPORT std_compatTargets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   )
-install(EXPORT std_compatConfig NAMESPACE std_compat:: DESTINATION share/std_compat/cmake)
+install(EXPORT std_compatTargets NAMESPACE std_compat:: DESTINATION share/std_compat/cmake)
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/std_compat/std_compatConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/std_compat/std_compatConfig.cmake"
+  DESTINATION share/std_compat/cmake
+  )
 install(DIRECTORY include/ DESTINATION
   ${CMAKE_INSTALL_INCLUDEDIR}/std_compat)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/std_compat/std_compat_version.h

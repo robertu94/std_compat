@@ -1,0 +1,4 @@
+@PACKAGE_INIT@
+check_required_components(std_compat)
+include("${CMAKE_CURRENT_LIST_DIR}/std_compatTargets.cmake")
+find_package(Boost)
