@@ -4,5 +4,5 @@ libdir=@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@
 Name: std_compat
 Description: std_compat
 Version: @PROJECT_VERSION@
-Cflags:  -I${includedir} @STDCOMPAT_BOOST_CPPFLAGS@
+Cflags:-std=c++@STDCOMPAT_CXX_VERSION@ -I${includedir} @STDCOMPAT_BOOST_CPPFLAGS@
 Libs: -L${libdir} -lstd_compat

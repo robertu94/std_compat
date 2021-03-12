@@ -21,6 +21,9 @@ namespace compat {
   using boost::variant;
   using boost::get;
   struct monostate {};
+
+  bool operator==(monostate const&, monostate const&) noexcept;
+
   template <typename T, typename... Ts>
   bool holds_alternative(const boost::variant<Ts...>& v) noexcept
   {

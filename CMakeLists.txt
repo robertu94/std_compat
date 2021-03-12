@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.2" LANGUAGES CXX)
+project(std_compat VERSION "0.0.3" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -105,16 +105,26 @@ configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/std_compat_version.h.in
   ${CMAKE_CURRENT_BINARY_DIR}/include/std_compat/std_compat_version.h
   )
+
+if(NOT (STDCOMPAT_HAS_VARIANT OR STDCOMPAT_HAS_OPTIONAL))
+  find_package(Boost COMPONENTS REQUIRED)
+  target_link_libraries(std_compat PUBLIC Boost::boost)
+  set(STDCOMPAT_BOOST_CPPFLAGS "-I${Boost_INCLUDE_DIRS}")
+else()
+  set(STDCOMPAT_BOOST_CPPFLAGS "")
+endif()
+
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/std_compat.pc.in
   ${CMAKE_CURRENT_BINARY_DIR}/std_compat.pc
   @ONLY
   )
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/std_compat_cxx.pc.in
+  ${CMAKE_CURRENT_BINARY_DIR}/std_compat_cxx.pc
+  @ONLY
+  )
 
-if(NOT (STDCOMPAT_HAS_VARIANT OR STDCOMPAT_HAS_OPTIONAL))
-  find_package(Boost COMPONENTS REQUIRED)
-  target_link_libraries(std_compat INTERFACE Boost::boost)
-endif()
 
 
 include(CMakePackageConfigHelpers)
@@ -144,7 +154,10 @@ install(DIRECTORY include/ DESTINATION
   ${CMAKE_INSTALL_INCLUDEDIR}/std_compat)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/std_compat/std_compat_version.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/std_compat)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/std_compat.pc DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pkgconfig)
+install(FILES 
+  ${CMAKE_CURRENT_BINARY_DIR}/std_compat.pc 
+  ${CMAKE_CURRENT_BINARY_DIR}/std_compat_cxx.pc 
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pkgconfig)
 
 
 if(BUILD_TESTING)

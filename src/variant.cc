@@ -5,5 +5,10 @@
 #if !(STDCOMPAT_HAS_VARIANT)
 namespace compat {
 const size_t variant_npos = std::numeric_limits<size_t>::max();
+
+
+bool operator==(monostate const&, monostate const&) noexcept {
+  return true;
+}
 }
 #endif
