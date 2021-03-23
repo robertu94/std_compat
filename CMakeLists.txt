@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.3" LANGUAGES CXX)
+project(std_compat VERSION "0.0.4" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -62,6 +62,7 @@ check_cpp_standard(negation)
 check_cpp_standard(clamp)
 check_cpp_standard(string_view)
 check_cpp_standard(is_null_pointer)
+check_cpp_standard(four_arg_equals)
 
 
 
@@ -98,7 +99,7 @@ target_include_directories(std_compat
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   )
 target_compile_options(std_compat PRIVATE 
-  $<$<CONFIG:Debug>: -Wall -Werror -Wextra -Wpedantic>
+  $<$<CONFIG:Debug>: -Wall -Wextra -Wpedantic>
   $<$<CONFIG:RelWithDebInfo>: ${NO_OMIT_FRAME_POINTER_FLAG}>
   )
 configure_file(

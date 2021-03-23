@@ -3,9 +3,9 @@ LibStdCompat is a C++14, 17, and 20 compatibility header for C++11
 It was previously part of [LibPressio](https://github.com/CODARcode/LibPressio) which has the license below:
 
 
-Copyright © 2020 , UChicago Argonne, LLC
+Copyright © 2021 , UChicago Argonne, LLC
 All Rights Reserved
-[libpressio, Version 0.51.0]
+[libpressio, Version 0.62.0]
 Robert Underwood
 Argonne National Laboratory
 

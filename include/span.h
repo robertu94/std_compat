@@ -32,6 +32,7 @@
 #ifndef STDCOMPAT_SPAN_H
 #define STDCOMPAT_SPAN_H
 #include "std_compat_version.h"
+#include "language.h"
 #include <cassert>
 #include <limits>
 #include <array>
@@ -135,11 +136,11 @@ public:
     }
 
 // 9
-    constexpr span           (const span&) noexcept = default;
-    constexpr span& operator=(const span&) noexcept = default;
+    STDCOMPAT_CONSTEXPR_CONSTRUCTOR span           (const span&) noexcept = default;
+    STDCOMPAT_CONSTEXPR span& operator=(const span&) noexcept = default;
 
 // 2
-     constexpr span(pointer ptr, size_type
+     STDCOMPAT_CONSTEXPR_CONSTRUCTOR span(pointer ptr, size_type
 #if __cplusplus >= 201703L
          count
 #endif
@@ -150,10 +151,8 @@ public:
 #endif
         }
 // 3
-     constexpr span(pointer 
-#if __cplusplus >= 201703L
+     STDCOMPAT_CONSTEXPR_CONSTRUCTOR span(pointer 
          first
-#endif
          , pointer
 #if __cplusplus >= 201703L
          last
@@ -166,15 +165,15 @@ public:
      }
 
 // 4
-     constexpr span(element_type (&arr)[Extent])          noexcept : span_data{arr} {}
+     STDCOMPAT_CONSTEXPR_CONSTRUCTOR span(element_type (&arr)[Extent])          noexcept : span_data{arr} {}
 // 5
-     constexpr span(      std::array<value_type, Extent>& arr) noexcept : span_data{arr.data()} {}
+     STDCOMPAT_CONSTEXPR_CONSTRUCTOR span(      std::array<value_type, Extent>& arr) noexcept : span_data{arr.data()} {}
 // 6
-     constexpr span(const std::array<value_type, Extent>& arr) noexcept : span_data{arr.data()} {}
+     STDCOMPAT_CONSTEXPR_CONSTRUCTOR span(const std::array<value_type, Extent>& arr) noexcept : span_data{arr.data()} {}
 
      template <class OtherElementType>
 
-     constexpr span(const span<OtherElementType, Extent> &other,
+     STDCOMPAT_CONSTEXPR_CONSTRUCTOR span(const span<OtherElementType, Extent> &other,
                     typename std::enable_if<
                         std::is_convertible<typename std::add_pointer<OtherElementType>::type, typename std::add_pointer<element_type>::type >::value,
                         std::nullptr_t>::type = nullptr)
@@ -182,7 +181,7 @@ public:
 
      template <class OtherElementType>
 
-     constexpr span(const span<OtherElementType, compat_dynamic_extent> &other,
+     STDCOMPAT_CONSTEXPR_CONSTRUCTOR span(const span<OtherElementType, compat_dynamic_extent> &other,
                     typename std::enable_if<
                         std::is_convertible<typename std::add_pointer<OtherElementType>, typename std::add_pointer<element_type>::type >::value,
                         std::nullptr_t>::type = nullptr) noexcept
@@ -197,7 +196,7 @@ public:
 
     template <size_t Count>
     
-    constexpr span<element_type, Count> first() const noexcept
+    STDCOMPAT_CONSTEXPR span<element_type, Count> first() const noexcept
     {
 #if __cplusplus >= 201703L
         static_assert(Count <= Extent, "Count out of range in span::first()");
@@ -207,7 +206,7 @@ public:
 
     template <size_t Count>
     
-    constexpr span<element_type, Count> last() const noexcept
+    STDCOMPAT_CONSTEXPR span<element_type, Count> last() const noexcept
     {
 #if __cplusplus >= 201703L
         static_assert(Count <= Extent, "Count out of range in span::last()");
@@ -295,7 +294,7 @@ public:
      constexpr const_reverse_iterator crbegin() const noexcept { return const_reverse_iterator(cend()); }
      constexpr const_reverse_iterator   crend() const noexcept { return const_reverse_iterator(cbegin()); }
 
-     constexpr void swap(span &other) noexcept
+     STDCOMPAT_CONSTEXPR void swap(span &other) noexcept
     {
         pointer p = span_data;
         span_data = other.span_data;
@@ -482,7 +481,7 @@ public:
      constexpr const_reverse_iterator crbegin() const noexcept { return const_reverse_iterator(cend()); }
      constexpr const_reverse_iterator   crend() const noexcept { return const_reverse_iterator(cbegin()); }
 
-     constexpr void swap(span &other) noexcept
+     STDCOMPAT_CONSTEXPR void swap(span &other) noexcept
     {
         pointer p = span_data;
         span_data = other.span_data;
@@ -522,7 +521,7 @@ auto as_writable_bytes(span<Type, Extent> s) noexcept
 
 template <class Type, size_t Extent>
 
-constexpr void swap(span<Type, Extent> &lhs, span<Type, Extent> &rhs) noexcept
+STDCOMPAT_CONSTEXPR void swap(span<Type, Extent> &lhs, span<Type, Extent> &rhs) noexcept
 { lhs.swap(rhs); }
 
 #else
