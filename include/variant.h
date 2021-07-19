@@ -13,6 +13,7 @@
 #include <boost/mpl/size_t.hpp>
 #else
 #include <variant>
+#include <cstddef>
 #endif
 
 

@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.5" LANGUAGES CXX)
+project(std_compat VERSION "0.0.6" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -28,8 +28,8 @@ set(default_cxx_standard 17)
 if(NOT STDCOMPAT_CXX_VERSION)
   set(STDCOMPAT_CXX_VERSION ${default_cxx_standard} CACHE 
     STRING "Which version of the cxx standard to expect" FORCE)
-  set_property(CACHE STDCOMPAT_CXX_VERSION PROPERTY STRINGS 11 14 17 20)
 endif()
+set_property(CACHE STDCOMPAT_CXX_VERSION PROPERTY STRINGS 11 14 17 20)
 
 #check for c++17 features
 function(check_cpp_standard api)
@@ -64,6 +64,7 @@ check_cpp_standard(string_view)
 check_cpp_standard(is_null_pointer)
 check_cpp_standard(four_arg_equals)
 check_cpp_standard(endian)
+check_cpp_standard(shared_mutex)
 
 
 
@@ -112,8 +113,18 @@ if(NOT (STDCOMPAT_HAS_VARIANT OR STDCOMPAT_HAS_OPTIONAL))
   find_package(Boost COMPONENTS REQUIRED)
   target_link_libraries(std_compat PUBLIC Boost::boost)
   set(STDCOMPAT_BOOST_CPPFLAGS "-I${Boost_INCLUDE_DIRS}")
+  set(STDCOMPAT_BOOST_LDFLAGS "")
 else()
   set(STDCOMPAT_BOOST_CPPFLAGS "")
+  set(STDCOMPAT_BOOST_LDFLAGS "")
+endif()
+
+if(NOT STDCOMPAT_HAS_SHARED_MUTEX)
+  find_package(Boost COMPONENTS Thread REQUIRED)
+  target_link_libraries(std_compat PUBLIC Boost::thread)
+  set(STDCOMPAT_BOOST_CPPFLAGS "${STDCOMPAT_BOOST_CPPFLAGS} -I${Boost_INCLUDE_DIRS}")
+  get_target_property(thread_lib Threads::Threads INTERFACE_LINK_LIBRARIES)
+  set(STDCOMPAT_BOOST_LDFLAGS "${thread_lib}")
 endif()
 
 configure_file(

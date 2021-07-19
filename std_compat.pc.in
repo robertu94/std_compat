@@ -5,4 +5,4 @@ Name: std_compat
 Description: std_compat
 Version: @PROJECT_VERSION@
 Cflags:  -I${includedir} @STDCOMPAT_BOOST_CPPFLAGS@
-Libs: -L${libdir} -lstd_compat
+Libs: -L${libdir} -lstd_compat @STDCOMPAT_BOOST_LDFLAGS@
