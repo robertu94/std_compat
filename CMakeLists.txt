@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.7" LANGUAGES CXX)
+project(std_compat VERSION "0.0.8" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -24,6 +24,7 @@ if(HAVE_NO_OMIT_FRAME_POINTER)
   set(NO_OMIT_FRAME_POINTER_FLAG "-fno-omit-frame-pointer")
 endif()
 
+option(STDCOMPAT_CXX_UNSTABLE "allow the extension versions of the compiler" OFF)
 set(default_cxx_standard 17)
 if(NOT STDCOMPAT_CXX_VERSION)
   set(STDCOMPAT_CXX_VERSION ${default_cxx_standard} CACHE 
@@ -39,7 +40,7 @@ function(check_cpp_standard api)
     ${CMAKE_BINARY_DIR}
     SOURCES "${CMAKE_SOURCE_DIR}/checks/${api}.cc" 
     CXX_STANDARD ${STDCOMPAT_CXX_VERSION}
-    CXX_STANDARD_REQUIRED ON
+    CXX_STANDARD_REQUIRED ${STDCOMPAT_CXX_UNSTABLE}
   )
   message(STATUS "Checking for ${api}: ${COMPILED}")
   set(STDCOMPAT_HAS_${HEADER_SUFFIX} ${COMPILED} PARENT_SCOPE)
