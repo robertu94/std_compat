@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.8" LANGUAGES CXX)
+project(std_compat VERSION "0.0.9" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -121,7 +121,8 @@ else()
 endif()
 
 if(NOT STDCOMPAT_HAS_SHARED_MUTEX)
-  find_package(Boost COMPONENTS Thread REQUIRED)
+  find_package(Boost COMPONENTS thread REQUIRED)
+  find_package(Threads REQUIRED)
   target_link_libraries(std_compat PUBLIC Boost::thread)
   set(STDCOMPAT_BOOST_CPPFLAGS "${STDCOMPAT_BOOST_CPPFLAGS} -I${Boost_INCLUDE_DIRS}")
   get_target_property(thread_lib Threads::Threads INTERFACE_LINK_LIBRARIES)
