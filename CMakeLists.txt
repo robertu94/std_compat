@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.9" LANGUAGES CXX)
+project(std_compat VERSION "0.0.10" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -66,6 +66,7 @@ check_cpp_standard(is_null_pointer)
 check_cpp_standard(four_arg_equals)
 check_cpp_standard(endian)
 check_cpp_standard(shared_mutex)
+check_cpp_standard(cbeginend)
 
 
 

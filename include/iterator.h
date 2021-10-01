@@ -47,6 +47,29 @@ namespace compat {
   using std::rend;
 #endif
 
+#if (!STDCOMPAT_HAS_CBEGINEND)
+  /**
+   * \param c container
+   * \returns c.cbegin()
+   */
+  template< class C >
+  auto cbegin( C const& c ) -> decltype(c.cbegin()) {
+    return c.begin();
+  }
+  /**
+   * \param c container
+   * \returns c.cend()
+   */
+  template< class C >
+  auto cend( C const& c ) -> decltype(c.cend()) {
+    return c.end();
+  }
+
+#else
+  using std::cbegin;
+  using std::cend;
+#endif
+
 #if (!STDCOMPAT_HAS_DATA)
   /**
    * \param c container
