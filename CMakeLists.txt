@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.10" LANGUAGES CXX)
+project(std_compat VERSION "0.0.11" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -38,7 +38,7 @@ function(check_cpp_standard api)
   try_compile(
     COMPILED
     ${CMAKE_BINARY_DIR}
-    SOURCES "${CMAKE_SOURCE_DIR}/checks/${api}.cc" 
+    SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/checks/${api}.cc" 
     CXX_STANDARD ${STDCOMPAT_CXX_VERSION}
     CXX_STANDARD_REQUIRED ${STDCOMPAT_CXX_UNSTABLE}
   )
