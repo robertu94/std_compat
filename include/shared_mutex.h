@@ -1,5 +1,6 @@
 #ifndef STDCOMPAT_SHARED_MUTEX_H
 #define STDCOMPAT_SHARED_MUTEX_H
+#include "std_compat_version.h"
 
 #if !(STDCOMPAT_HAS_SHARED_MUTEX)
 #include <boost/thread/shared_mutex.hpp>
@@ -7,7 +8,6 @@
 #include <shared_mutex>
 #endif
 
-#include "std_compat_version.h"
 
 namespace compat {
 #if !(STDCOMPAT_HAS_SHARED_MUTEX)
