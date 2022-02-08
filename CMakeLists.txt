@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.13" LANGUAGES CXX)
+project(std_compat VERSION "0.0.14" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -31,6 +31,8 @@ if(NOT STDCOMPAT_CXX_VERSION)
     STRING "Which version of the cxx standard to expect" FORCE)
 endif()
 set_property(CACHE STDCOMPAT_CXX_VERSION PROPERTY STRINGS 11 14 17 20)
+
+message("using c++${STDCOMPAT_CXX_VERSION} with unstable=${STDCOMPAT_CXX_UNSTABLE}")
 
 #check for c++17 features
 function(check_cpp_standard api)
@@ -129,7 +131,11 @@ if(NOT STDCOMPAT_HAS_SHARED_MUTEX)
   target_link_libraries(std_compat PUBLIC Boost::thread)
   set(STDCOMPAT_BOOST_CPPFLAGS "${STDCOMPAT_BOOST_CPPFLAGS} -I${Boost_INCLUDE_DIRS}")
   get_target_property(thread_lib Threads::Threads INTERFACE_LINK_LIBRARIES)
-  set(STDCOMPAT_BOOST_LDFLAGS "${thread_lib}")
+  if("${thread_lib}" STREQUAL "thread_lib-NOTFOUND")
+    set(STDCOMPAT_BOOST_LDFLAGS "")
+  else()
+    set(STDCOMPAT_BOOST_LDFLAGS "${thread_lib}")
+  endif()
 endif()
 
 configure_file(
