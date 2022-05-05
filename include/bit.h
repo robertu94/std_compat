@@ -32,7 +32,7 @@ using std::endian;
       return static_cast<uint16_t>((n << 8) | (n >> 8));
     }
     constexpr uint32_t swap32(uint32_t n) {
-      return (n << 24) | ((n << 8) & 0x00FF'0000) | ((n >> 8) & 0x0000'FF00) | (n >> 24);
+      return (n << 24) | ((n << 8) & 0x00FF0000) | ((n >> 8) & 0x0000FF00) | (n >> 24);
     }
     constexpr uint64_t swap64(uint64_t n) {
       return (n << 56) | ((n << 40) & 0x00FF000000000000) | ((n << 24) & 0x0000FF0000000000)
