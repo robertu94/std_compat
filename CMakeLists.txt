@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.15" LANGUAGES CXX)
+project(std_compat VERSION "0.0.16" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -48,6 +48,7 @@ function(check_cpp_standard api)
   set(STDCOMPAT_HAS_${HEADER_SUFFIX} ${COMPILED} PARENT_SCOPE)
 endfunction()
 
+check_cpp_standard(lerp)
 check_cpp_standard(transform_reduce)
 check_cpp_standard(exclusive_scan)
 check_cpp_standard(exchange)
@@ -97,6 +98,7 @@ add_library(std_compat
   ./include/cstddef.h
   ./include/language.h
   ./include/string_view.h
+  ./include/cmath.h
   )
 target_compile_features(std_compat PUBLIC cxx_std_${STDCOMPAT_CXX_VERSION})
 target_include_directories(std_compat 
