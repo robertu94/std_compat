@@ -212,6 +212,7 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/std_compat_cxx.pc 
   DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pkgconfig)
 
+option(STD_COMPAT_USE_SYSTEM_GTEST "use the system gtest dependency" OFF)
 
 if(BUILD_TESTING)
   add_subdirectory(test)
@@ -230,8 +231,6 @@ if(USE_INCLUDE_WHAT_YOU_USE)
   set_target_properties(std_compat PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "${INCLUDE_WHAT_YOU_USE}")
   set_target_properties(std_compat PROPERTIES C_INCLUDE_WHAT_YOU_USE "${INCLUDE_WHAT_YOU_USE}")
 endif()
-
-option(USE_SYSTEM_GTEST "use the system gtest dependency" OFF)
 
 option(BUILD_DOCS "build the documentation" OFF)
 if(BUILD_DOCS)

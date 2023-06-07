@@ -1,4 +1,4 @@
-if(NOT USE_SYSTEM_GTEST)
+if(NOT STD_COMPAT_USE_SYSTEM_GTEST)
   configure_file(GTestCMakeLists.txt.in googletest-download/CMakeLists.txt)
 
   execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -32,7 +32,7 @@ endif()
 function(add_gtest)
   get_filename_component(test_name ${ARGV0} NAME_WE)
   add_executable(${test_name} ${ARGV})
-  if(USE_SYSTEM_GTEST)
+  if(STD_COMPAT_USE_SYSTEM_GTEST)
     find_package(GTest REQUIRED)
     target_link_libraries(${test_name} PRIVATE GTest::gtest_main GTest::gtest GTest::gmock)
   else()
