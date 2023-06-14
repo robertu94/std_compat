@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.17" LANGUAGES CXX)
+project(std_compat VERSION "0.0.18" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -94,7 +94,7 @@ check_cpp_standard(mutex)
 check_cpp_standard(cbeginend)
 check_cpp_standard(byteswap)
 
-if(NOT (STDCOMPAT_HAS_OPTIONAL AND STDCOMPAT_HAS_VARIANT AND STDCOMPAT_HAS_STRING_VIEW AND STDCOMPAT_HAS_MUTEX))
+if(NOT (STDCOMPAT_HAS_OPTIONAL AND STDCOMPAT_HAS_VARIANT AND STDCOMPAT_HAS_STRING_VIEW AND STDCOMPAT_HAS_SHARED_MUTEX))
     set(STDCOMPAT_BOOST_REQUIRED TRUE)
 else()
     set(STDCOMPAT_BOOST_REQUIRED FALSE)
