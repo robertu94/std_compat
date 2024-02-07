@@ -1,6 +1,6 @@
 ## template for a CMake C++ Library
 cmake_minimum_required(VERSION 3.14)
-project(std_compat VERSION "0.0.19" LANGUAGES CXX)
+project(std_compat VERSION "0.0.20" LANGUAGES CXX)
 
 #correct was to set a default build type
 # https://blog.kitware.com/cmake-and-the-default-build-type/
@@ -51,7 +51,7 @@ if(NOT STDCOMPAT_CXX_VERSION)
   set(STDCOMPAT_CXX_VERSION ${default_cxx_standard} CACHE 
     STRING "Which version of the cxx standard to expect" FORCE)
 endif()
-set_property(CACHE STDCOMPAT_CXX_VERSION PROPERTY STRINGS 11 14 17 20)
+set_property(CACHE STDCOMPAT_CXX_VERSION PROPERTY STRINGS 11 14 17 20 23)
 
 message("using c++${STDCOMPAT_CXX_VERSION} with unstable=${STDCOMPAT_CXX_UNSTABLE}")
 
