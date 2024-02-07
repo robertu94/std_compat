@@ -7,6 +7,7 @@
 #include "std_compat_version.h"
 #include "language.h"
 #include <algorithm>
+#include <cassert>
 
 namespace compat {
 #if !(STDCOMPAT_HAS_NTH_ELEMENT)
