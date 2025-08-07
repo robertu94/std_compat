@@ -2,6 +2,7 @@
 #define STDCOMPAT_CMATH_H
 
 #include <cmath>
+#include <utility>
 
 namespace compat {
 #if !(STDCOMPAT_HAS_LERP)
